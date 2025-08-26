@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:ConfSpeakersMaui.ViewModels"
              xmlns:models="clr-namespace:ConfSpeakersMaui.Models"
-             x:Class="ConfSpeakersMaui.MainPage"
-             x:DataType="viewmodels:MainViewModel"
-             Title=".NET Day Switzerland">
+             x:Class="ConfSpeakersMaui.Pages.SessionsPage"
+             x:DataType="viewmodels:SessionsViewModel"
+             Title="Sessions">
 
     <Grid>
         <!-- Background Gradient -->
@@ -31,7 +31,7 @@
                         TextColor="White"
                         HorizontalOptions="Center" />
                     <Label 
-                        Text="Meet Our Amazing Speakers"
+                        Text="Conference Sessions"
                         FontSize="18"
                         TextColor="#F0F0F0"
                         HorizontalOptions="Center" />
@@ -61,7 +61,7 @@
                         HorizontalTextAlignment="Center" />
                     <Button 
                         Text="Retry"
-                        Command="{Binding LoadSpeakersCommand}"
+                        Command="{Binding LoadSessionsCommand}"
                         BackgroundColor="White"
                         TextColor="#8B2B47"
                         Margin="0,10,0,0"
@@ -69,17 +69,17 @@
                         Padding="30,10" />
                 </StackLayout>
 
-                <!-- Speakers List -->
+                <!-- Sessions List -->
                 <CollectionView 
-                    ItemsSource="{Binding Speakers}"
+                    ItemsSource="{Binding Sessions}"
                     IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
                     BackgroundColor="Transparent"
                     Margin="15,0">
                     
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Speaker">
+                        <DataTemplate x:DataType="models:SessionWithSpeaker">
                             <Grid Padding="5">
-                                <!-- Speaker Card -->
+                                <!-- Session Card -->
                                 <Border 
                                     BackgroundColor="White"
                                     Stroke="Transparent"
@@ -93,43 +93,58 @@
                                         <RoundRectangle CornerRadius="15" />
                                     </Border.StrokeShape>
 
-                                    <Grid ColumnDefinitions="80,*" ColumnSpacing="15">
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
                                         
-                                        <!-- Profile Picture -->
-                                        <Border Grid.Column="0" 
-                                                VerticalOptions="Start"
-                                                WidthRequest="80"
-                                                HeightRequest="80"
-                                                BackgroundColor="#F5F5F5"
-                                                Stroke="#E0E0E0"
-                                                StrokeThickness="1">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="40" />
-                                            </Border.StrokeShape>
-                                            <Image 
-                                                Source="{Binding ImageUrl}"
-                                                Aspect="AspectFill"
-                                                WidthRequest="80"
-                                                HeightRequest="80" />
-                                        </Border>
-
-                                        <!-- Speaker Info -->
-                                        <StackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
-                                            <!-- Name -->
-                                            <Label 
-                                                Text="{Binding Name}"
-                                                FontSize="20"
-                                                FontAttributes="Bold"
-                                                TextColor="#2C2C2C"
-                                                LineBreakMode="TailTruncation" />
+                                        <!-- Time and Room Header -->
+                                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding TimeSlot}"
+                                                   FontSize="18"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#8B2B47"
+                                                   VerticalOptions="Center" />
                                             
-                                            <!-- Company/Tagline -->
-                                            <Label 
-                                                Text="{Binding Company}"
-                                                FontSize="14"
-                                                TextColor="#666666"
-                                                LineBreakMode="WordWrap"
-                                                MaxLines="2" />
+                                            <StackLayout Grid.Column="1" 
+                                                         Orientation="Horizontal"
+                                                         Spacing="5"
+                                                         VerticalOptions="Center">
+                                                <Label Text="{Binding RoomIcon}"
+                                                       FontSize="16" />
+                                                <Label Text="{Binding Room}"
+                                                       FontSize="14"
+                                                       TextColor="#666666"
+                                                       FontAttributes="Bold" />
+                                            </StackLayout>
+                                        </Grid>
+
+                                        <!-- Separator Line -->
+                                        <BoxView Grid.Row="1" 
+                                                 HeightRequest="1"
+                                                 BackgroundColor="#E0E0E0"
+                                                 HorizontalOptions="FillAndExpand" />
+
+                                        <!-- Session Title -->
+                                        <Label Grid.Row="2"
+                                               Text="{Binding Title}"
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               TextColor="#2C2C2C"
+                                               LineBreakMode="WordWrap" />
+
+                                        <!-- Speaker Info and Abstract -->
+                                        <StackLayout Grid.Row="3" Spacing="8">
+                                            <!-- Speaker Name -->
+                                            <Label Text="{Binding SpeakerName}"
+                                                   FontSize="16"
+                                                   TextColor="#8B2B47"
+                                                   FontAttributes="Bold" />
+                                            
+                                            <!-- Abstract Preview -->
+                                            <Label Text="{Binding AbstractPreview}"
+                                                   FontSize="14"
+                                                   TextColor="#666666"
+                                                   LineBreakMode="WordWrap"
+                                                   MaxLines="3" />
                                         </StackLayout>
                                     </Grid>
                                 </Border>

@@ -2,6 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:ConfSpeakersMaui"
+             xmlns:converters="clr-namespace:ConfSpeakersMaui.Converters"
              x:Class="ConfSpeakersMaui.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,6 +10,16 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Converters -->
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            
+            <!-- Shadows -->
+            <Shadow x:Key="CardShadow" 
+                    Brush="#40000000" 
+                    Offset="0,2" 
+                    Radius="8" 
+                    Opacity="0.3" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
