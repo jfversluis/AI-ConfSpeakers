@@ -38,6 +38,28 @@ public class Session
     public DateTime EndsAt { get; set; }
 }
 
+/// <summary>
+/// Model that combines session data with speaker information for display in sessions overview
+/// </summary>
+public class SessionWithSpeaker
+{
+    public string Title { get; set; } = string.Empty;
+    public string Abstract { get; set; } = string.Empty;
+    public string Room { get; set; } = string.Empty;
+    public DateTime StartsAt { get; set; }
+    public DateTime EndsAt { get; set; }
+    
+    // Speaker information
+    public string SpeakerName { get; set; } = string.Empty;
+    public string SpeakerCompany { get; set; } = string.Empty;
+    public string SpeakerImageUrl { get; set; } = string.Empty;
+    
+    // Computed properties for display
+    public string TimeSlot => $"{StartsAt:HH:mm} - {EndsAt:HH:mm}";
+    public string AbstractPreview => Abstract.Length > 100 ? $"{Abstract[..100]}..." : Abstract;
+    public string RoomIcon => "📍";
+}
+
 public class SpeakersResponse
 {
     [JsonPropertyName("speakers")]

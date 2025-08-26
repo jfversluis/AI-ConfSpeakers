@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ConfSpeakersMaui.ViewModels"
+             xmlns:models="clr-namespace:ConfSpeakersMaui.Models"
+             x:Class="ConfSpeakersMaui.Pages.SessionsPage"
+             x:DataType="viewmodels:SessionsViewModel"
+             Title="Sessions">
+
+    <Grid>
+        <!-- Background Gradient -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#8B2B47" Offset="0.0" />
+                <GradientStop Color="#B8336A" Offset="0.3" />
+                <GradientStop Color="#C73E6C" Offset="0.7" />
+                <GradientStop Color="#D4477F" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Main Content -->
+        <Grid RowDefinitions="Auto,*">
+            
+            <!-- Header -->
+            <Grid Grid.Row="0" Padding="20,40,20,20">
+                <StackLayout Spacing="8">
+                    <Label 
+                        Text=".NET Day Switzerland"
+                        FontSize="32"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalOptions="Center" />
+                    <Label 
+                        Text="Conference Sessions"
+                        FontSize="18"
+                        TextColor="#F0F0F0"
+                        HorizontalOptions="Center" />
+                </StackLayout>
+            </Grid>
+
+            <!-- Content Area -->
+            <Grid Grid.Row="1">
+                <!-- Loading Indicator -->
+                <ActivityIndicator 
+                    IsVisible="{Binding IsLoading}"
+                    IsRunning="{Binding IsLoading}"
+                    Color="White"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center" />
+
+                <!-- Error Message -->
+                <StackLayout 
+                    IsVisible="{Binding HasError}"
+                    Padding="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <Label 
+                        Text="{Binding ErrorMessage}"
+                        TextColor="White"
+                        FontSize="16"
+                        HorizontalTextAlignment="Center" />
+                    <Button 
+                        Text="Retry"
+                        Command="{Binding LoadSessionsCommand}"
+                        BackgroundColor="White"
+                        TextColor="#8B2B47"
+                        Margin="0,10,0,0"
+                        CornerRadius="25"
+                        Padding="30,10" />
+                </StackLayout>
+
+                <!-- Sessions List -->
+                <CollectionView 
+                    ItemsSource="{Binding Sessions}"
+                    IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                    BackgroundColor="Transparent"
+                    Margin="15,0">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:SessionWithSpeaker">
+                            <Grid Padding="5">
+                                <!-- Session Card -->
+                                <Border 
+                                    BackgroundColor="White"
+                                    Stroke="Transparent"
+                                    StrokeThickness="0"
+                                    Shadow="{OnPlatform 
+                                        Default={StaticResource CardShadow},
+                                        WinUI={x:Null}}"
+                                    Padding="20"
+                                    Margin="0,5">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="15" />
+                                    </Border.StrokeShape>
+
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
+                                        
+                                        <!-- Time and Room Header -->
+                                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding TimeSlot}"
+                                                   FontSize="18"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#8B2B47"
+                                                   VerticalOptions="Center" />
+                                            
+                                            <StackLayout Grid.Column="1" 
+                                                         Orientation="Horizontal"
+                                                         Spacing="5"
+                                                         VerticalOptions="Center">
+                                                <Label Text="{Binding RoomIcon}"
+                                                       FontSize="16" />
+                                                <Label Text="{Binding Room}"
+                                                       FontSize="14"
+                                                       TextColor="#666666"
+                                                       FontAttributes="Bold" />
+                                            </StackLayout>
+                                        </Grid>
+
+                                        <!-- Separator Line -->
+                                        <BoxView Grid.Row="1" 
+                                                 HeightRequest="1"
+                                                 BackgroundColor="#E0E0E0"
+                                                 HorizontalOptions="FillAndExpand" />
+
+                                        <!-- Session Title -->
+                                        <Label Grid.Row="2"
+                                               Text="{Binding Title}"
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               TextColor="#2C2C2C"
+                                               LineBreakMode="WordWrap" />
+
+                                        <!-- Speaker Info and Abstract -->
+                                        <StackLayout Grid.Row="3" Spacing="8">
+                                            <!-- Speaker Name -->
+                                            <Label Text="{Binding SpeakerName}"
+                                                   FontSize="16"
+                                                   TextColor="#8B2B47"
+                                                   FontAttributes="Bold" />
+                                            
+                                            <!-- Abstract Preview -->
+                                            <Label Text="{Binding AbstractPreview}"
+                                                   FontSize="14"
+                                                   TextColor="#666666"
+                                                   LineBreakMode="WordWrap"
+                                                   MaxLines="3" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>
